@@ -18,4 +18,4 @@ Not Started
 
 ## History
 
-<!-- Keep this updated. Earliest to latest -->
+- **2026-04-08** — Initial Next.js 16 project setup (create-next-app), project context docs, README, GitHub repo created
