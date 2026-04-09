@@ -2,11 +2,23 @@
 
 ## Status
 
-Completed
+In Progress
 
 ## Goals
 
+- Main content area to the right of sidebar
+- Recent collections section
+- Pinned items section
+- 10 most recent items
+- 4 stats cards at the top (items, collections, favorite items, favorite collections)
+
 ## Notes
+
+- Spec: @context/features/dashboard-phase-3-spec.md
+- Screenshot reference: @context/screenshots/dashboard-ui-main.png
+- Mock data: @src/lib/mock-data.ts
+- Phase 1 spec: @context/features/dashboard-phase-1-spec.md
+- Phase 2 spec: @context/features/dashboard-phase-2-spec.md
 
 ## History
 
