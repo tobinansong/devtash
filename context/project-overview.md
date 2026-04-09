@@ -335,6 +335,13 @@ model ItemTag {
 - Syntax highlighting for code blocks
 - Design references: Notion, Linear, Raycast
 
+### Screenshots
+Refer to the screenshots below as a base for the dashboard UI.
+It does not have to be exact.  Use it as a reference.
+
+@context\screenshots\dashboard-ui-drawer.png
+@context\screenshots\dashboard-ui-main.png
+
 ### Layout
 
 - **Sidebar** (collapsible): item type nav links (`/items/snippets`, `/items/commands`, etc.) and recent collections
