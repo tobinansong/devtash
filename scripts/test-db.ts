@@ -1,4 +1,5 @@
 import "dotenv/config";
+import bcrypt from "bcryptjs";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "../generated/prisma/client";
 
@@ -9,34 +10,77 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("Testing database connection...\n");
 
-  const userCount = await prisma.user.count();
-  const itemCount = await prisma.item.count();
-  const collectionCount = await prisma.collection.count();
-  const tagCount = await prisma.tag.count();
-  const itemTypeCount = await prisma.itemType.count();
+  // ─── Record counts ─────────────────────────────────────
+
+  const [userCount, itemTypeCount, itemCount, collectionCount] = await Promise.all([
+    prisma.user.count(),
+    prisma.itemType.count(),
+    prisma.item.count(),
+    prisma.collection.count(),
+  ]);
 
   console.log("── Record Counts ──────────────────");
   console.log(`  Users:       ${userCount}`);
   console.log(`  Item Types:  ${itemTypeCount}`);
-  console.log(`  Items:       ${itemCount}`);
   console.log(`  Collections: ${collectionCount}`);
-  console.log(`  Tags:        ${tagCount}`);
+  console.log(`  Items:       ${itemCount}`);
 
-  const items = await prisma.item.findMany({
-    include: {
-      type: true,
-      tags: { include: { tag: true } },
-      collections: { include: { collection: true } },
-    },
+  // ─── Demo user ─────────────────────────────────────────
+
+  const demoUser = await prisma.user.findUnique({
+    where: { email: "demo@devstash.io" },
   });
 
-  console.log("\n── Items ──────────────────────────");
-  for (const item of items) {
-    const tags = item.tags.map((t) => t.tag.name).join(", ");
-    const cols = item.collections.map((c) => c.collection.name).join(", ");
-    console.log(`  [${item.type.name}] ${item.title}`);
-    if (tags) console.log(`    Tags: ${tags}`);
-    if (cols) console.log(`    Collections: ${cols}`);
+  if (!demoUser) {
+    throw new Error("Demo user not found — run `npm run db:seed` first.");
+  }
+
+  console.log("\n── Demo User ──────────────────────");
+  console.log(`  Name:          ${demoUser.name}`);
+  console.log(`  Email:         ${demoUser.email}`);
+  console.log(`  isPro:         ${demoUser.isPro}`);
+  console.log(`  emailVerified: ${demoUser.emailVerified?.toISOString() ?? "null"}`);
+
+  // Verify the seeded password hash works
+  const passwordOk = demoUser.password
+    ? await bcrypt.compare("12345678", demoUser.password)
+    : false;
+  console.log(`  Password:      ${passwordOk ? "✓ verified (12345678)" : "✗ hash mismatch"}`);
+
+  // ─── Item types ────────────────────────────────────────
+
+  const itemTypes = await prisma.itemType.findMany({
+    orderBy: { name: "asc" },
+  });
+
+  console.log("\n── Item Types ─────────────────────");
+  for (const type of itemTypes) {
+    console.log(`  ${type.name.padEnd(10)} ${type.color}  ${type.icon}`);
+  }
+
+  // ─── Collections with items ────────────────────────────
+
+  const collections = await prisma.collection.findMany({
+    where: { userId: demoUser.id },
+    include: {
+      items: {
+        include: {
+          item: { include: { type: true } },
+        },
+      },
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
+  console.log("\n── Collections ────────────────────");
+  for (const col of collections) {
+    console.log(`\n  ▸ ${col.name} (${col.items.length} items)`);
+    console.log(`    ${col.description}`);
+    for (const link of col.items) {
+      const { item } = link;
+      const meta = item.url ? ` → ${item.url}` : "";
+      console.log(`      [${item.type.name}] ${item.title}${meta}`);
+    }
   }
 
   console.log("\n✓ Database connection successful!");

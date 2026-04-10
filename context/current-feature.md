@@ -6,23 +6,24 @@ Completed
 
 ## Goals
 
-- Set up Prisma ORM with Neon PostgreSQL (serverless)
-- Create initial schema based on data models in project-overview.md
-- Include NextAuth models (Account, Session, VerificationToken)
-- Add appropriate indexes and cascade deletes
-- Use Prisma 7 (with breaking changes from v6)
-- Create migrations (never use db push)
+- Replace the existing seed script with a spec-compliant version
+- Create a demo user (demo@devstash.io) with bcryptjs-hashed password (12 rounds)
+- Seed 7 system item types with lowercase names (snippet, prompt, command, note, file, image, link)
+- Seed 5 collections (React Patterns, AI Workflows, DevOps, Terminal Commands, Design Resources) with items per spec
+- Use real URLs for all link items
+- Overwrite the existing `prisma/seed.ts` file
 
 ## Notes
 
-- Spec: @context/features/database-spec.md
+- Spec: @context/features/seed-spec.md
 - Data models: @context/project-overview.md
 - Coding standards: @context/coding-standards.md
-- Use development branch in DATABASE_URL, production branch separate
-- Prisma 7 upgrade guide: https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7
-- Prisma setup guide: https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/prisma-postgres
+- Password hashing: bcryptjs with 12 rounds
+- Run with `npm run db:seed`
 
 ## History
+
+- **2026-04-10** — Seed data: bcryptjs-hashed demo user (demo@devstash.io), 7 lowercase system item types, 5 spec-compliant collections (React Patterns, AI Workflows, DevOps, Terminal Commands, Design Resources) with 18 items total, real URLs for links; updated scripts/test-db.ts to verify demo user, password hash, item types, and collections
 
 - **2026-04-10** — Prisma 7 + Neon PostgreSQL setup: prisma-client generator with generated/prisma output, prisma.config.ts with dotenv, PrismaNeon driver adapter, full schema (User, Account, Session, VerificationToken, ItemType, Item, Collection, Tag + join tables), initial migration, seed script (7 system types, demo user, 6 collections, 18 tags, 8 items), db:* npm scripts, test-db.ts script
 

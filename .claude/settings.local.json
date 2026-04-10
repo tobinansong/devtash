@@ -19,7 +19,9 @@
       "Bash(npm install:*)",
       "Bash(npx prisma:*)",
       "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=yes npx prisma migrate reset --force)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.google.com)"
     ]
   }
 }
