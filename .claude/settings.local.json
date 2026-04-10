@@ -1,7 +1,25 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh repo:*)"
+      "Bash(gh repo:*)",
+      "Bash(npm run:*)",
+      "Bash(git checkout:*)",
+      "Bash(npx shadcn@latest add sheet avatar tooltip separator --yes)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git merge:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(npx shadcn@latest add card badge --yes)",
+      "Bash(powershell -Command \"Set-Content -Path '.next' -Stream com.dropbox.ignored -Value 1\")",
+      "Bash(powershell -Command \"Remove-Item -Recurse -Force .next\")",
+      "mcp__context7__resolve-library-id",
+      "WebFetch(domain:www.prisma.io)",
+      "mcp__context7__query-docs",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=yes npx prisma migrate reset --force)",
+      "Bash(npx tsx:*)"
     ]
   }
 }
