@@ -6,22 +6,26 @@ Completed
 
 ## Goals
 
-- Replace the existing seed script with a spec-compliant version
-- Create a demo user (demo@devstash.io) with bcryptjs-hashed password (12 rounds)
-- Seed 7 system item types with lowercase names (snippet, prompt, command, note, file, image, link)
-- Seed 5 collections (React Patterns, AI Workflows, DevOps, Terminal Commands, Design Resources) with items per spec
-- Use real URLs for all link items
-- Overwrite the existing `prisma/seed.ts` file
+- Replace dummy collection data in the dashboard main area with real data from Neon via Prisma
+- Create `src/lib/db/collections.ts` with data fetching functions
+- Fetch collections directly in the server component (no mock-data.ts)
+- Derive collection card border color from the most-used content type in that collection
+- Show small icons of all item types present in each collection
+- Keep the existing 6-card recent collections layout/design
+- Update collection stats display
+- Do not render items underneath the cards yet (deferred)
 
 ## Notes
 
-- Spec: @context/features/seed-spec.md
+- Spec: @context/features/dashboard-collections-spec.md
 - Data models: @context/project-overview.md
 - Coding standards: @context/coding-standards.md
-- Password hashing: bcryptjs with 12 rounds
-- Run with `npm run db:seed`
+- Screenshot reference: @context/screenshots/dashboard-ui-main.png
+- Current mock source to replace: @src/lib/mock-data.ts
 
 ## History
+
+- **2026-04-10** — Dashboard collections wired to Neon: new `src/lib/db/collections.ts` with `getCurrentUserId` (demo user fallback) and `getRecentCollectionsWithStats` (per-collection item count, sorted type summaries, dominant type); `CollectionsGrid` converted to async server component, dominant-type left border accent, per-type lucide icons tinted by type color, empty state, `mock-data` import removed
 
 - **2026-04-10** — Seed data: bcryptjs-hashed demo user (demo@devstash.io), 7 lowercase system item types, 5 spec-compliant collections (React Patterns, AI Workflows, DevOps, Terminal Commands, Design Resources) with 18 items total, real URLs for links; updated scripts/test-db.ts to verify demo user, password hash, item types, and collections
 
