@@ -92,6 +92,7 @@ async function main() {
     data: {
       name: "React Patterns",
       description: "Reusable React patterns and hooks",
+      isFavorite: true,
       userId: user.id,
     },
   });
@@ -291,6 +292,7 @@ docker rename myapp-new myapp-old`,
     data: {
       name: "Terminal Commands",
       description: "Useful shell commands for everyday development",
+      isFavorite: true,
       userId: user.id,
     },
   });
