@@ -6,24 +6,26 @@ Completed
 
 ## Goals
 
-- Replace dummy collection data in the dashboard main area with real data from Neon via Prisma
-- Create `src/lib/db/collections.ts` with data fetching functions
-- Fetch collections directly in the server component (no mock-data.ts)
-- Derive collection card border color from the most-used content type in that collection
-- Show small icons of all item types present in each collection
-- Keep the existing 6-card recent collections layout/design
-- Update collection stats display
-- Do not render items underneath the cards yet (deferred)
+- Replace dummy item data (pinned and recent) in the dashboard main area with real data from Neon via Prisma
+- Create `src/lib/db/items.ts` with data fetching functions
+- Fetch items directly in the server component (no mock-data.ts)
+- Derive item card icon and border color from the item type
+- Display item type tags and other existing card details
+- Hide the pinned section entirely when there are no pinned items
+- Update item/collection stats display
+- Preserve the current layout and design
 
 ## Notes
 
-- Spec: @context/features/dashboard-collections-spec.md
+- Spec: @context/features/dashboard-items-spec.md
 - Data models: @context/project-overview.md
 - Coding standards: @context/coding-standards.md
 - Screenshot reference: @context/screenshots/dashboard-ui-main.png
 - Current mock source to replace: @src/lib/mock-data.ts
 
 ## History
+
+- **2026-04-11** — Dashboard items wired to Neon: new `src/lib/db/items.ts` with `getPinnedItems`, `getRecentItems`, and `getDashboardStats` (parallel counts for items/collections/favorites); `PinnedItems`, `RecentItems`, and `StatsCards` converted to async server components, type-colored left border accents, type + tags joined in queries; `PinnedItems` returns `null` when no items pinned; dashboard main area no longer references `mock-data`
 
 - **2026-04-10** — Dashboard collections wired to Neon: new `src/lib/db/collections.ts` with `getCurrentUserId` (demo user fallback) and `getRecentCollectionsWithStats` (per-collection item count, sorted type summaries, dominant type); `CollectionsGrid` converted to async server component, dominant-type left border accent, per-type lucide icons tinted by type color, empty state, `mock-data` import removed
 

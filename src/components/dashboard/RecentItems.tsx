@@ -1,25 +1,19 @@
 import { Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { items, itemTypes } from "@/lib/mock-data";
+import { getCurrentUserId } from "@/lib/db/collections";
+import { getRecentItems } from "@/lib/db/items";
 
-const recentItems = [...items]
-  .sort(
-    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-  )
-  .slice(0, 10);
-
-function getItemType(typeId: string) {
-  return itemTypes.find((t) => t.id === typeId);
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
 }
 
-export function RecentItems() {
+export async function RecentItems() {
+  const userId = await getCurrentUserId();
+  const recentItems = userId ? await getRecentItems(userId, 10) : [];
+
   if (recentItems.length === 0) return null;
 
   return (
@@ -30,18 +24,17 @@ export function RecentItems() {
       </div>
       <div className="space-y-2">
         {recentItems.map((item) => {
-          const type = getItemType(item.typeId);
+          const type = item.type;
           return (
             <div
               key={item.id}
               className="flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50 cursor-pointer"
+              style={{ borderLeft: `3px solid ${type.color}` }}
             >
-              {type && (
-                <div
-                  className="size-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: type.color }}
-                />
-              )}
+              <div
+                className="size-2 shrink-0 rounded-full"
+                style={{ backgroundColor: type.color }}
+              />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="font-medium truncate">{item.title}</h3>
@@ -68,17 +61,15 @@ export function RecentItems() {
                   </div>
                 )}
               </div>
-              {type && (
-                <span
-                  className="shrink-0 rounded px-2 py-0.5 text-xs font-medium"
-                  style={{
-                    color: type.color,
-                    backgroundColor: `${type.color}15`,
-                  }}
-                >
-                  {type.name}
-                </span>
-              )}
+              <span
+                className="shrink-0 rounded px-2 py-0.5 text-xs font-medium capitalize"
+                style={{
+                  color: type.color,
+                  backgroundColor: `${type.color}15`,
+                }}
+              >
+                {type.name}
+              </span>
               <span className="shrink-0 text-xs text-muted-foreground">
                 {formatDate(item.updatedAt)}
               </span>

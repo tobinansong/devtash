@@ -1,21 +1,19 @@
 import { Pin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { items, itemTypes } from "@/lib/mock-data";
+import { getCurrentUserId } from "@/lib/db/collections";
+import { getPinnedItems } from "@/lib/db/items";
 
-const pinnedItems = items.filter((i) => i.isPinned);
-
-function getItemType(typeId: string) {
-  return itemTypes.find((t) => t.id === typeId);
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
 }
 
-export function PinnedItems() {
+export async function PinnedItems() {
+  const userId = await getCurrentUserId();
+  const pinnedItems = userId ? await getPinnedItems(userId) : [];
+
   if (pinnedItems.length === 0) return null;
 
   return (
@@ -26,11 +24,12 @@ export function PinnedItems() {
       </div>
       <div className="space-y-2">
         {pinnedItems.map((item) => {
-          const type = getItemType(item.typeId);
+          const type = item.type;
           return (
             <div
               key={item.id}
               className="flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50 cursor-pointer"
+              style={{ borderLeft: `3px solid ${type.color}` }}
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
@@ -59,17 +58,15 @@ export function PinnedItems() {
                   </div>
                 )}
               </div>
-              {type && (
-                <span
-                  className="shrink-0 rounded px-2 py-0.5 text-xs font-medium"
-                  style={{
-                    color: type.color,
-                    backgroundColor: `${type.color}15`,
-                  }}
-                >
-                  {type.name}
-                </span>
-              )}
+              <span
+                className="shrink-0 rounded px-2 py-0.5 text-xs font-medium capitalize"
+                style={{
+                  color: type.color,
+                  backgroundColor: `${type.color}15`,
+                }}
+              >
+                {type.name}
+              </span>
               <span className="shrink-0 text-xs text-muted-foreground">
                 {formatDate(item.updatedAt)}
               </span>
