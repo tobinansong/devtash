@@ -22,7 +22,10 @@
       "Bash(npx tsx:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:www.google.com)",
-      "Bash(node -e \"const bcrypt=require\\('bcryptjs'\\); console.log\\(bcrypt.hashSync\\('12345678', 12\\)\\);\")"
+      "Bash(node -e \"const bcrypt=require\\('bcryptjs'\\); console.log\\(bcrypt.hashSync\\('12345678', 12\\)\\);\")",
+      "Bash(git commit:*)",
+      "Bash(git stash:*)",
+      "Bash(ls:*)"
     ]
   }
 }
