@@ -16,6 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -46,6 +47,8 @@ export type SidebarData = {
   collections: SidebarCollections;
   user: CurrentUser | null;
 };
+
+const PRO_TYPES = new Set(["file", "image"]);
 
 function capitalize(name: string) {
   return name.charAt(0).toUpperCase() + name.slice(1);
@@ -96,6 +99,7 @@ function SidebarContent({ data }: { data: SidebarData }) {
                   </TooltipTrigger>
                   <TooltipContent side="right">
                     {label} ({type.count})
+                    {PRO_TYPES.has(type.name) && " · PRO"}
                   </TooltipContent>
                 </Tooltip>
               );
@@ -113,6 +117,11 @@ function SidebarContent({ data }: { data: SidebarData }) {
                   </span>
                 )}
                 <span className="flex-1 truncate">{label}</span>
+                {PRO_TYPES.has(type.name) && (
+                  <Badge variant="secondary" className="h-4 px-1 text-[10px] font-semibold">
+                    PRO
+                  </Badge>
+                )}
                 <span className="text-xs text-muted-foreground/70">
                   {type.count}
                 </span>
