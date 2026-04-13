@@ -1,20 +1,12 @@
-# Current Feature: Add Pro Badge to Sidebar
+# Current Feature
 
 ## Status
 
-In Progress
+Completed
 
 ## Goals
 
-- Add a "PRO" badge next to the File and Image item types in the sidebar
-- Use the shadcn/ui Badge component
-- Badge text should be "PRO" (all uppercase)
-
 ## Notes
-
-- Spec: @context/features/add-pro-badge-sidebar.md
-- Sidebar component renders item types from database data
-- Only File and Image types are Pro-gated (see project-overview.md)
 
 ## History
 
@@ -33,3 +25,5 @@ In Progress
 - **2026-04-11** — Dashboard items wired to Neon: new `src/lib/db/items.ts` with `getPinnedItems`, `getRecentItems`, and `getDashboardStats` (parallel counts for items/collections/favorites); `PinnedItems`, `RecentItems`, and `StatsCards` converted to async server components, type-colored left border accents, type + tags joined in queries; `PinnedItems` returns `null` when no items pinned; dashboard main area no longer references `mock-data`
 
 - **2026-04-11** — Sidebar wired to Neon: new `getSystemItemTypes(userId)` in `src/lib/db/items.ts` (parallel `findMany` + `groupBy`, fixed display order: snippet/prompt/command/note/file/image/link); new `getCurrentUser` and `getSidebarCollections(userId)` in `src/lib/db/collections.ts` (favorites + capped recents, dominant-type computed per collection); dashboard layout converted to async server component that fetches sidebar data once and passes to `Sidebar` and `MobileDrawer`; `Sidebar`/`MobileDrawer` accept `data: SidebarData` prop, mock-data import removed; type rows link to `/items/[name]s` with live counts; recent collections render colored dot from `dominantType.color`; "View all collections →" link added; seed marks React Patterns and Terminal Commands as favorites; `src/lib/mock-data.ts` deleted
+
+- **2026-04-13** — Pro badge in sidebar: added shadcn/ui `Badge` component with "PRO" label next to File and Image item types in the sidebar; collapsed sidebar shows "· PRO" in tooltip; `PRO_TYPES` set used for clean type checking
